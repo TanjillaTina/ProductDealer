@@ -38,10 +38,15 @@ var registerPost= (req, res,next)=> {
           });
       
           User.registerUser(newUser, (err, user) => {
-            if(err) throw err;
+            if(err) {
+                //throw err;
+                req.flash('error_msg', 'Filed To register!! Try Again');
+                res.redirect('/register');
+            }
+            else{
             req.flash('success_msg', 'You are registered and can log in');
-            
-            res.redirect('/register');
+            res.redirect('/');
+        }
           });
     }
     

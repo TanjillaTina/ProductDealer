@@ -7,10 +7,10 @@ var bodyParser=require('body-parser');
 var expressValidator=require('express-validator');
 var flash=require('connect-flash');
 var session=require('express-session');
-var passsport=require('passport');
+const passport = require('passport');
 var keys=require('./config/keys');
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var userRouter = require('./routes/user-profile');
 var registerRouter = require('./routes/register');
 
 //mongoose setup
@@ -24,7 +24,13 @@ console.log('Database Connencted');
 
 
 
+
 var app = express();
+
+//inont passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -70,13 +76,18 @@ app.use(flash());
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  res.locals.user = req.user || null;
   
   next();
 });
 
+// var flash = require('express-flash-messages');
+// app.use(flash());
+
 ////defining routes
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', userRouter);
 app.use('/register', registerRouter);
 
 // catch 404 and forward to error handler
