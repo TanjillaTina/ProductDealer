@@ -8,10 +8,21 @@ var expressValidator=require('express-validator');
 var flash=require('connect-flash');
 var session=require('express-session');
 var passsport=require('passport');
-var mongoose=require('mongoose');
-
+var keys=require('./config/keys');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var registerRouter = require('./routes/register');
+
+//mongoose setup
+//mongodb setup
+const mongoose=require('mongoose');
+mongoose.Promise=global.Promise;
+//connect to mongodb
+mongoose.connect(keys.mongodb.dbURI).then(function(){
+console.log('Database Connencted');
+});
+
+
 
 var app = express();
 
@@ -67,6 +78,7 @@ app.use((req, res, next) => {
 ////defining routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/register', registerRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
