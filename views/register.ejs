@@ -11,21 +11,29 @@
    <link href="/css/jumbotron-narrow.css" rel="stylesheet">
     </head>
     <body>
+
+            <% if(success_msg) { %>
+                <div class="alert alert-success" role="alert">
+                    <%= success_msg %>
+                      </div>
+                <% }%>
+
+                <% if(error_msg) { %>
+                    <div class="alert alert-danger" role="alert">
+                           <%= error_msg %>
+                          </div>
+                    <% }%>
+
         <div class="container">
             <div class="header">
               <ul class="nav nav-pills pull-right">
                 <li><a href="/">Homepage</a></li>
 
-                <% if(user) { %>
-                
-                <li> <a href="/auth/logout">Logout</a></li>
                
-
-                <% } else { %>
 
                 <li><a href="/auth/login">Login</a></li>
                 
-                <% } %>
+           
                 
               </ul>
               <h3 class="text-muted">Daily Product Monitoring System</h3>

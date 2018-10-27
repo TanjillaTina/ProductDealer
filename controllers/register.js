@@ -1,5 +1,5 @@
 var express = require('express');
-
+var User=require('../models/user');
 
 
 var registerPage= (req, res)=> {
@@ -13,7 +13,7 @@ var registerPost= (req, res,next)=> {
      var name=req.body.name;
      var username=req.body.username;
      var email=req.body.email;
-     var password=req.body.password1;
+     var password=req.body.password;
      var password2=req.body.password2;
 
 
@@ -30,12 +30,22 @@ var registerPost= (req, res,next)=> {
     if(errors){
         res.render('register',{errors:errors});
     }else{
-        console.log('succes');
-        //res.render('index');
-        res.render('index');
-        //return;
+        const newUser = new User({
+            name: name,
+            username: username,
+            email: email,
+            password: password
+          });
+      
+          User.registerUser(newUser, (err, user) => {
+            if(err) throw err;
+            req.flash('success_msg', 'You are registered and can log in');
+            
+            res.redirect('/register');
+          });
     }
     
+
 
 
 
