@@ -12,13 +12,14 @@
     </head>
     <body>
 
-            
+
             <% if(success_msg) { %>
                     
                     
                 <h3 class="myerror"> <%= success_msg %> </h3>
                    
              <% }%>
+
 
         <div class="container">
             <div class="header">
@@ -45,30 +46,35 @@
                   <div class="col-md-12 col-xs-12 col-sm-0 col-lg-12 ">
                     <div class="col-md-1 col-xs-2 col-sm-0 col-lg-2 "></div>
                     <div class="col-md-10 col-xs-8 col-sm-8=12 col-lg-8">
-                          
-                  <% if (errors) { %>
-                    <div class="row">
-                          <div class="card">
-                            <div class="card-body">
-                              <h1 class="card-title"></h1>
-            
-                              <% errors.forEach(function(error) { %>
-                                
-                                <div class="alert alert-danger" role="alert">
-                                    <strong><%= error.msg %></strong> 
-                                  </div>
-                              
-                     
-                               <% }); %>
-            
-                            </div>
-                          </div>
+
+
+
+                            <% if (errors) { %>
+                                <div class="row">
+                                      <div class="card">
+                                        <div class="card-body">
+                                          <h1 class="card-title"></h1>
                         
-                    </div>
-            
-                    <% } %>
-                      
-                      
+                                          <% errors.forEach(function(error) { %>
+                                            
+                                            <div class="alert alert-danger" role="alert">
+                                                <strong><%= error.msg %></strong> 
+                                              </div>
+                                          
+                                 
+                                           <% }); %>
+                        
+                                        </div>
+                                      </div>
+                                    
+                                </div>
+                        
+                                <% } %>
+                    
+
+                
+
+
 
                         <form action="/register"  method="POST">
                                 <div class="form-group">

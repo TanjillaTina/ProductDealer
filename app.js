@@ -1,21 +1,18 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
 var bodyParser=require('body-parser');
 var expressValidator=require('express-validator');
 var flash=require('connect-flash');
 var session=require('express-session');
 const passport = require('passport');
 var keys=require('./config/keys');
-var indexRouter = require('./routes/index');
-var userRouter = require('./routes/user-profile');
-var registerRouter = require('./routes/register');
-
-//mongoose setup
-//mongodb setup
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
 const mongoose=require('mongoose');
+
+//mongodb setup
+
 mongoose.Promise=global.Promise;
 //connect to mongodb
 mongoose.connect(keys.mongodb.dbURI).then(function(){
@@ -23,24 +20,26 @@ console.log('Database Connencted');
 });
 
 
-
+//route files
+var indexRouter = require('./routes/index');
+var profileRouter = require('./routes/profile');
 
 var app = express();
 
-//inont passport
-app.use(passport.initialize());
-app.use(passport.session());
-
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+
+
 //body parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
@@ -52,6 +51,7 @@ app.use(session({
   saveUninitialized: true,
   resave: true
 }));
+
 
 ///express-validator
 
@@ -71,6 +71,8 @@ app.use(expressValidator({
     };
   }
 }));
+
+
 ///express messages
 app.use(flash());
 app.use((req, res, next) => {
@@ -82,13 +84,18 @@ app.use((req, res, next) => {
   next();
 });
 
-// var flash = require('express-flash-messages');
-// app.use(flash());
 
-////defining routes
+//init passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
+
+
+
 app.use('/', indexRouter);
-app.use('/user', userRouter);
-app.use('/register', registerRouter);
+app.use('/profile', profileRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
